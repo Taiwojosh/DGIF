@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+migrated_prompt_history
+.env
+.env.*
+! .env.example
+firebase-applet-config.json
