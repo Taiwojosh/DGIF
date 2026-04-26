@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Outlet } from 'react-router-dom';
 import { FOUNDATION_NAME } from '../constants';
 
 const ScrollToTop = () => {
@@ -11,7 +11,7 @@ const ScrollToTop = () => {
   return null;
 };
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Layout: React.FC = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -140,7 +140,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </aside>
 
       <main className="flex-grow">
-        {children}
+        <Outlet />
       </main>
 
       <footer className="bg-emerald-950 text-emerald-100/60 py-16 md:py-24 relative overflow-hidden">

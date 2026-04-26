@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'taiwojoshua423@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Reflections
+    match /reflections/{reflectionId} {
+      function isValidReflection(data) {
+        return data.name is string && data.name.size() <= 100 &&
+               data.text is string && data.text.size() <= 2000 &&
+               data.approved is bool &&
+               data.createdAt is timestamp;
+      }
+
+      allow read: if resource.data.approved == true || isAdmin();
+      allow list: if resource.data.approved == true || isAdmin();
+      
+      allow create: if isValidReflection(request.resource.data) && 
+                      request.resource.data.createdAt == request.time &&
+                      request.resource.data.approved == true; // Auto-approve for now as requested
+      
+      allow update, delete: if isAdmin();
+    }
+
+    // Applications
+    match /applications/{applicationId} {
+      function isValidApplication(data) {
+        return data.fullName is string && data.fullName.size() <= 200 &&
+               data.phone is string && data.phone.size() <= 50 &&
+               data.status in ['pending', 'reviewed', 'accepted', 'rejected'] &&
+               data.submittedAt is timestamp;
+      }
+
+      allow read, list: if isAdmin();
+      
+      allow create: if isValidApplication(request.resource.data) &&
+                      request.resource.data.submittedAt == request.time &&
+                      request.resource.data.status == 'pending';
+      
+      allow update, delete: if isAdmin();
+    }
+
+    // Admins
+    match /admins/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAdmin();
+    }
+  }
+}

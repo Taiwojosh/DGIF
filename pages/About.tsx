@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { TESTIMONIES, FULL_BIOGRAPHY_TEXT } from '../constants';
-import { googleSheetsService } from '../src/services/googleSheetsService';
+import { firebaseService } from '../src/services/firebaseService';
 import { Comment } from '../types';
 
 const About: React.FC = () => {
@@ -11,7 +11,7 @@ const About: React.FC = () => {
   useEffect(() => {
     const fetchDynamicTestimonies = async () => {
       try {
-        const data = await googleSheetsService.fetchComments();
+        const data = await firebaseService.fetchReflections();
         // Only take the top 3 or latest ones
         setDynamicTestimonies(data.slice(0, 6));
       } catch (error) {

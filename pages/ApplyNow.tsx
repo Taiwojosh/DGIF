@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ApplicationFormData, ApplicationStatus } from '../types';
-import { googleSheetsService } from '../src/services/googleSheetsService';
+import { firebaseService } from '../src/services/firebaseService';
 
 const DRAFT_KEY = 'dgif_scholarship_draft';
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -90,7 +90,7 @@ const ApplyNow: React.FC = () => {
     setStatus(ApplicationStatus.SUBMITTING);
     
     try {
-      await googleSheetsService.submitApplication(formData);
+      await firebaseService.submitApplication(formData);
       localStorage.removeItem(DRAFT_KEY);
       setStatus(ApplicationStatus.SUCCESS);
     } catch (error) {

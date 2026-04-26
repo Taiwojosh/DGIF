@@ -1,0 +1,55 @@
+{
+  "entities": {
+    "Reflection": {
+      "title": "Reflection",
+      "description": "A community testimony or reflection post",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Display name of the author" },
+        "role": { "type": "string", "description": "Role or relationship (e.g. Alumnus, Friend)" },
+        "text": { "type": "string", "description": "The reflection content" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of post" },
+        "approved": { "type": "boolean", "description": "Whether the post is visible to public" }
+      },
+      "required": ["name", "text", "createdAt", "approved"]
+    },
+    "Application": {
+      "title": "Scholarship Application",
+      "description": "A scholarship application submission",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "financialNeed": { "type": "string" },
+        "essay": { "type": "string" },
+        "academicRecordUrl": { "type": "string", "description": "URL to the uploaded academic document" },
+        "identityDocUrl": { "type": "string", "description": "URL to the uploaded identity document" },
+        "financialDocUrl": { "type": "string", "description": "URL to the uploaded financial document" },
+        "referenceLetterUrl": { "type": "string", "description": "URL to the uploaded reference letter" },
+        "status": { "type": "string", "enum": ["pending", "reviewed", "accepted", "rejected"] },
+        "submittedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fullName", "phone", "financialNeed", "essay", "submittedAt", "status"]
+    }
+  },
+  "firestore": {
+    "/reflections/{reflectionId}": {
+      "schema": "Reflection",
+      "description": "Public reflections"
+    },
+    "/applications/{applicationId}": {
+      "schema": "Application",
+      "description": "Private scholarship applications"
+    },
+    "/admins/{userId}": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "role": { "type": "string", "enum": ["admin"] }
+        }
+      },
+      "description": "Admin users"
+    }
+  }
+}

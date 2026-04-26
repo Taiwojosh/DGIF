@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BIOGRAPHY_SUMMARY, PERSON_NAME, QUOTE, FULL_BIO, FULL_BIOGRAPHY_TEXT, TESTIMONIES } from '../constants';
-import { googleSheetsService } from '../src/services/googleSheetsService';
+import { firebaseService } from '../src/services/firebaseService';
 import { Comment } from '../types';
 
 const Home: React.FC = () => {
@@ -12,7 +12,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchDynamicTestimonies = async () => {
       try {
-        const data = await googleSheetsService.fetchComments();
+        const data = await firebaseService.fetchReflections();
         setDynamicTestimonies(data.slice(0, 3));
       } catch (error) {
         console.error("Error fetching testimonies for Home page:", error);

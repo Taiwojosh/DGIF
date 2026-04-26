@@ -34,9 +34,38 @@ export enum ApplicationStatus {
   ERROR = 'ERROR'
 }
 
+export interface Application {
+  id: string;
+  fullName: string;
+  phone: string;
+  financialNeed: string;
+  essay: string;
+  academicRecordUrl?: string;
+  identityDocUrl?: string;
+  financialDocUrl?: string;
+  referenceLetterUrl?: string;
+  status: 'pending' | 'reviewed' | 'accepted' | 'rejected';
+  submittedAt: any;
+}
+
+export interface Application {
+  id: string;
+  fullName: string;
+  phone: string;
+  financialNeed: string;
+  essay: string;
+  academicRecordUrl?: string;
+  identityDocUrl?: string;
+  financialDocUrl?: string;
+  referenceLetterUrl?: string;
+  status: 'pending' | 'reviewed' | 'accepted' | 'rejected';
+  submittedAt: any;
+}
+
 export interface Comment {
   id: string;
   name: string;
+  role: string;
   text: string;
   date: string;
 }
