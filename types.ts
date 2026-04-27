@@ -54,4 +54,5 @@ export interface Comment {
   role: string;
   text: string;
   date: string;
+  approved?: boolean;
 }
